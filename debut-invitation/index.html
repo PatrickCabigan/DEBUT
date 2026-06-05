@@ -41,11 +41,18 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
   70%{opacity:0.9;}
   100%{opacity:0; transform:translate(70vw, -25vh) scale(0.7) rotate(540deg);}
 }
-/* additional subtle flutter for variety */
-@keyframes gentleFlutter{
-  0%{transform:translate(0,0) rotate(0deg);}
-  50%{transform:translate(8px, -12px) rotate(8deg);}
-  100%{transform:translate(-5px, 5px) rotate(-4deg);}
+/* additional floating sparkles / orbs */
+.sparkle{
+  position:fixed; pointer-events:none; z-index:4;
+  border-radius:50%; background: radial-gradient(circle, #B8FFDA, #FFB8EC);
+  animation: floatSparkle 6s ease-in-out infinite;
+  opacity:0;
+}
+@keyframes floatSparkle{
+  0%{opacity:0; transform:translateY(0) scale(0);}
+  20%{opacity:0.7; transform:translateY(-30px) scale(1);}
+  80%{opacity:0.5; transform:translateY(-100px) scale(0.8);}
+  100%{opacity:0; transform:translateY(-150px) scale(0);}
 }
 .env-petal{position:absolute; pointer-events:none; opacity:0; animation:epetalFall var(--d,12s) linear infinite var(--dl,0s); font-size:var(--fs,16px);}
 @keyframes epetalFall{
@@ -137,11 +144,22 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
 #app{position:relative; z-index:5; max-width:620px; margin:0 auto; padding:0 0 60px;}
 
 /* Hero */
-#hero{min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 20px;}
+#hero{min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 20px; position:relative;}
 .hero-name{font-family:'Cinzel Decorative',serif; font-weight:700; font-size:clamp(30px,9vw,58px); background:linear-gradient(135deg,var(--gold-light),var(--gold),#fff); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .hero-sub{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(16px,4vw,22px); color:var(--pink);}
 .hero-date-pill{margin-top:28px; padding:10px 28px; border:1px solid var(--gold); border-radius:50px; background:rgba(255,184,236,0.2); backdrop-filter:blur(6px);}
-.scroll-hint{position:absolute; bottom:28px; left:50%; transform:translateX(-50%); animation:bobDown 2s infinite;}
+/* replaced scroll hint with "created by PATatas" */
+.scroll-hint{
+  position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+  font-family:'Cinzel Decorative',serif; font-size:12px; letter-spacing:2px;
+  color:rgba(184,255,218,0.9); background:rgba(0,0,0,0.3); backdrop-filter:blur(4px);
+  padding:6px 16px; border-radius:40px; white-space:nowrap;
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+@keyframes gentlePulse{
+  0%,100%{opacity:0.6; transform:translateX(-50%) scale(0.98);}
+  50%{opacity:1; transform:translateX(-50%) scale(1);}
+}
 
 .section{padding:60px 20px; position:relative;}
 .section-title{font-family:'Cinzel Decorative',serif; font-size:clamp(18px,5vw,26px); color:var(--gold-light); text-align:center; letter-spacing:0.1em;}
@@ -169,7 +187,7 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
 .carousel-dot{width:8px; height:8px; border-radius:50%; background:rgba(255,184,236,0.5); cursor:pointer; transition:all 0.2s;}
 .carousel-dot.active{background:var(--gold); box-shadow:0 0 8px var(--gold);}
 
-/* Lists container */
+/* Lists container - NO EMOJIS in titles */
 .lists-wrapper{display:flex; flex-direction:column; gap:24px;}
 .list-card{
   background:rgba(0,0,0,0.45); backdrop-filter:blur(16px);
@@ -196,6 +214,14 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
 .swatch{width:44px; height:44px; border-radius:50%; border:2px solid white; box-shadow:0 0 10px rgba(0,0,0,0.3);}
 .swatch1{background:#FFB8EC;}.swatch2{background:#B8FFDA;}.swatch3{background:#FFFFFF;}
 footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:11px; letter-spacing:2px;}
+
+/* extra floating text animation for "created by" */
+@keyframes floatText{
+  0%{transform:translateX(-50%) translateY(0);}
+  50%{transform:translateX(-50%) translateY(-3px);}
+  100%{transform:translateX(-50%) translateY(0);}
+}
+.scroll-hint{animation: gentlePulse 2s ease-in-out infinite, floatText 3s ease-in-out infinite;}
 </style>
 </head>
 <body>
@@ -208,7 +234,6 @@ footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:1
     <div class="env-title">🦋 A Garden of Wishes 🦋</div>
     <div id="env-box">
       <div class="env-body"></div>
-      <!-- RIBBON REMOVED -->
       <div class="env-flap-left"></div><div class="env-flap-right"></div><div class="env-flap-bottom"></div>
       <div class="env-letter">
         <div class="env-letter-name">Monique Diane Basallote</div>
@@ -234,7 +259,7 @@ footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:1
       <h1 class="hero-name">Monique Diane<br>Basallote</h1>
       <p class="hero-sub">turning eighteen</p>
       <div class="hero-date-pill">June 27, 2026 · 5:30 PM</div>
-      <div class="scroll-hint">✨ scroll ✨</div>
+      <div class="scroll-hint">✨ created by PATatas ✨</div>
     </section>
 
     <!-- GALLERY (6 images) -->
@@ -260,7 +285,7 @@ footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:1
       <div class="glass-card reveal"><p style="font-size:22px; font-weight:bold; color:var(--pink); text-align:center;">Villa Salud Catering Services</p><p class="venue-addr">#229 M.L Quezon st purok 3 Brgy New Lower Bicutan Taguig City</p><p style="text-align:center; margin-top:8px;">🌸 Garden Reception 🌸</p></div>
     </section>
 
-    <!-- 18 LISTS -->
+    <!-- 18 LISTS (NO EMOJIS) -->
     <section class="section"><h2 class="section-title">✦ The 18 Ceremony ✦</h2><div class="section-divider"><div class="divider-line"></div><div class="divider-gem"></div><div class="divider-line"></div></div>
       <div class="lists-wrapper reveal" id="lists-root"></div>
     </section>
@@ -280,14 +305,14 @@ footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:1
 </div>
 
 <script>
-// ======================== DATA LISTS (1-18 each) ========================
+// ======================== DATA LISTS (titles without emojis) ========================
 const listData = {
-  "🌹 18 Roses": ["Roy Ativo","Mark Daniel Rojas","Clint Peter Maggay","Cedrick Basallote","Mark Dimver Navia","Daniel Jose Niel Maambong","Kobe Catucod","AJ Guzman","Vince Miranda","James Mark Guzman","Noel Lamud","Joefer Burce","Ralph Nathan Ramirez","JV Navia","Lenard Adrianne Del Rosario","Jpatrick Cabigan","Charles Andrei Noroña","Sandy Basallote"],
-  "🎁 18 Gifts": ["Shameerah Elise Porto","Keyanne Cañete","Bea Trasmaño","Krish Ann Esteban","Kristine Macaspac","Krizette Cera","Shereen Tejana","Krisha Mae Gallardo","Prairee Basallote","Alma Lealde","Jasmine Joy Libo-on","Krizle Dala","Krizza Mae Cera","Crystel Dollesin","Irah Dollesin","Babylyn Lolo","Marielle Borinaga","Marian Borinaga"],
-  "🕯️ 18 Candles": ["Francine Celajez","Maria Honeyleth Aringo","Fritzy Joy Alcala","Trisha Mae Letegio","Anika Jersey De Leon","Aubrey Dizon","Rose Ann Cabagtong","Marian Charnelle Constantino","Suri Leian Sobmbrero","Melchora Mirabel","Vivian Cera","Connie Dollesin","Shiekka Ilano","Elijah Yzekielle Nuñez","Aziza Haley Salomon","Tamara Basallote","Ralph Nathan Ramirez","Syril Aquino Del Castillio"],
-  "🍾 18 Shots": ["John Carlo Guzman","Roy Guzman","Jay Guzman","Jericho Guzman","Jordan Miranda","Arthur Cabigan","Emer Guzman","Jr. Ricky Lolo","Tonton Guzman","JM Pelo","Ronnie Dollesin","Chris Charvie Cera","Jeric Barola","John Bert Dollesin","Chris Angelo Cera","Jr. Cesar Guzman","Rico Dollesin","Mark Dimver Navia"],
-  "💙 18 Blue Bills": ["Ninang Grace Ativo","Ninang Vanessa Barola","Ninong Liane Guzman","Ninong Glenly Calag","Ninong Rey Mendiola","Tita Lyra Ativo","Tita Sarah Jean Dasig","Tita Mommy Loida Yadao","Tita Fatima Mabale","Tito Chris Charvie Cera","Tito Ronnie Dollesin","Tito Angelo Cera","Tito John Bert Dollesin","Tito Jr. Ricky Lolo","Kuya Daniel Basallote","Ate Aira Del Castillio","Tita Maricris Guzman","Tita Maivy Guzman"],
-  "✨ 18 Treasures": ["Lourish Joy Dasig","Prescious Guzman","Niña Rea Guzman","Babylyn Lolo","Clarisa Magdamit","Mary Grace Guzman","Crista Chin Miranda","Krisha Navia","Elaina Faith Guzman","Amara Basallote","Princess Chantal Miranda","Tanya Grace Guzman","Athea Tolosa","Chanlian Miranda","Wyeth Basallote","Ethan Andrei Tolosa","Xian Liam Guzman","Kurt Nathan Socayre"]
+  "18 Roses": ["Roy Ativo","Mark Daniel Rojas","Clint Peter Maggay","Cedrick Basallote","Mark Dimver Navia","Daniel Jose Niel Maambong","Kobe Catucod","AJ Guzman","Vince Miranda","James Mark Guzman","Noel Lamud","Joefer Burce","Ralph Nathan Ramirez","JV Navia","Lenard Adrianne Del Rosario","Jpatrick Cabigan","Charles Andrei Noroña","Sandy Basallote"],
+  "18 Gifts": ["Shameerah Elise Porto","Keyanne Cañete","Bea Trasmaño","Krish Ann Esteban","Kristine Macaspac","Krizette Cera","Shereen Tejana","Krisha Mae Gallardo","Prairee Basallote","Alma Lealde","Jasmine Joy Libo-on","Krizle Dala","Krizza Mae Cera","Crystel Dollesin","Irah Dollesin","Babylyn Lolo","Marielle Borinaga","Marian Borinaga"],
+  "18 Candles": ["Francine Celajez","Maria Honeyleth Aringo","Fritzy Joy Alcala","Trisha Mae Letegio","Anika Jersey De Leon","Aubrey Dizon","Rose Ann Cabagtong","Marian Charnelle Constantino","Suri Leian Sobmbrero","Melchora Mirabel","Vivian Cera","Connie Dollesin","Shiekka Ilano","Elijah Yzekielle Nuñez","Aziza Haley Salomon","Tamara Basallote","Ralph Nathan Ramirez","Syril Aquino Del Castillio"],
+  "18 Shots": ["John Carlo Guzman","Roy Guzman","Jay Guzman","Jericho Guzman","Jordan Miranda","Arthur Cabigan","Emer Guzman","Jr. Ricky Lolo","Tonton Guzman","JM Pelo","Ronnie Dollesin","Chris Charvie Cera","Jeric Barola","John Bert Dollesin","Chris Angelo Cera","Jr. Cesar Guzman","Rico Dollesin","Mark Dimver Navia"],
+  "18 Blue Bills": ["Ninang Grace Ativo","Ninang Vanessa Barola","Ninong Liane Guzman","Ninong Glenly Calag","Ninong Rey Mendiola","Tita Lyra Ativo","Tita Sarah Jean Dasig","Tita Mommy Loida Yadao","Tita Fatima Mabale","Tito Chris Charvie Cera","Tito Ronnie Dollesin","Tito Angelo Cera","Tito John Bert Dollesin","Tito Jr. Ricky Lolo","Kuya Daniel Basallote","Ate Aira Del Castillio","Tita Maricris Guzman","Tita Maivy Guzman"],
+  "18 Treasures": ["Lourish Joy Dasig","Prescious Guzman","Niña Rea Guzman","Babylyn Lolo","Clarisa Magdamit","Mary Grace Guzman","Crista Chin Miranda","Krisha Navia","Elaina Faith Guzman","Amara Basallote","Princess Chantal Miranda","Tanya Grace Guzman","Athea Tolosa","Chanlian Miranda","Wyeth Basallote","Ethan Andrei Tolosa","Xian Liam Guzman","Kurt Nathan Socayre"]
 };
 
 const container = document.getElementById('lists-root');
@@ -302,10 +327,10 @@ for (const [title, names] of Object.entries(listData)) {
     gridDiv.appendChild(item);
   });
 }
-// Special Gift Card
+// Special Gift (no emoji)
 const specialCard = document.createElement('div');
 specialCard.className = 'list-card';
-specialCard.innerHTML = `<div class="list-title">💎 Special Gift</div><div class="list-item" style="justify-content:center;"><span class="list-num">★</span><span class="list-name" style="color:#FFB8EC; font-size:18px;">Diana Rose Basallote</span></div>`;
+specialCard.innerHTML = `<div class="list-title">Special Gift</div><div class="list-item" style="justify-content:center;"><span class="list-num">★</span><span class="list-name" style="color:#FFB8EC; font-size:18px;">Diana Rose Basallote</span></div>`;
 container.appendChild(specialCard);
 
 // ======================== CAROUSEL ========================
@@ -327,7 +352,7 @@ for (let i = 0; i < total; i++) {
 }
 updateCarousel();
 
-// ======================== ENVELOPE LOGIC ========================
+// ======================== ENVELOPE OPEN ========================
 let opened = false;
 const envBox = document.getElementById('env-box'), envScreen = document.getElementById('envelope-screen');
 const invitationDiv = document.getElementById('invitation'), overlayDiv = document.getElementById('transition-overlay');
@@ -353,42 +378,53 @@ function openEnvelope(e) {
 envBox.addEventListener('click', openEnvelope);
 envBox.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openEnvelope(e); });
 
-// ======================== ABUNDANT LIGHT GREEN BUTTERFLIES (removed ribbon, added 80+ butterflies) ========================
-// Envelope screen butterflies (light green tint)
-for (let i = 0; i < 45; i++) {
+// ======================== BUTTERFLIES + SPARKLES (MORE ANIMATION) ========================
+// Envelope screen butterflies (light green & pink)
+for (let i = 0; i < 50; i++) {
   const b = document.createElement('div');
   b.className = 'butterfly-env';
   b.innerHTML = '🦋';
   const dur = 12 + Math.random() * 20;
   const delay = Math.random() * 15;
   const left = Math.random() * 100;
-  const size = 20 + Math.random() * 22;
+  const size = 20 + Math.random() * 24;
   b.style.cssText = `position:fixed; left:${left}vw; top:-10vh; animation: flyButterflyRandom ${dur}s ease-in-out infinite ${delay}s; font-size:${size}px; filter: drop-shadow(0 0 8px #B8FFDA) drop-shadow(0 0 3px #FFB8EC); z-index:15;`;
   document.getElementById('envelope-screen').appendChild(b);
 }
-// Main invitation butterflies (massive, light green dominant)
-for (let i = 0; i < 70; i++) {
+// Main invitation butterflies (abundant)
+for (let i = 0; i < 80; i++) {
   const b = document.createElement('div');
   b.className = 'butterfly-global';
   b.innerHTML = '🦋';
-  const dur = 14 + Math.random() * 22;
+  const dur = 14 + Math.random() * 24;
   const delay = Math.random() * 18;
   const left = Math.random() * 100;
-  const size = 18 + Math.random() * 26;
-  b.style.cssText = `left:${left}vw; animation-duration:${dur}s; animation-delay:${delay}s; font-size:${size}px; filter: drop-shadow(0 0 10px #B8FFDA) drop-shadow(0 0 5px #A8E6C0); z-index:6;`;
+  const size = 18 + Math.random() * 28;
+  b.style.cssText = `left:${left}vw; animation-duration:${dur}s; animation-delay:${delay}s; font-size:${size}px; filter: drop-shadow(0 0 12px #B8FFDA) drop-shadow(0 0 5px #A8E6C0); z-index:6;`;
   document.body.appendChild(b);
 }
-// Additional floating petals & fairy particles
-for (let i = 0; i < 40; i++) {
+// Additional floating sparkles (new animation)
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  const size = 2 + Math.random() * 6;
+  const left = Math.random() * 100;
+  const dur = 4 + Math.random() * 6;
+  const delay = Math.random() * 10;
+  s.style.cssText = `width:${size}px; height:${size}px; left:${left}vw; bottom:-20px; animation: floatSparkle ${dur}s ease-in-out infinite ${delay}s; background: radial-gradient(circle, #B8FFDA, #FFB8EC);`;
+  document.body.appendChild(s);
+}
+// Petals & fairy particles
+for (let i = 0; i < 45; i++) {
   const p = document.createElement('div');
   p.className = 'fairy-particle';
   p.style.cssText = `width:${3+Math.random()*7}px; height:${3+Math.random()*7}px; background:${['#B8FFDA','#FFB8EC','#FFF'][i%3]}; left:${Math.random()*100}vw; bottom:${Math.random()*20}vh; --dur:${5+Math.random()*12}s; --delay:${Math.random()*12}s; box-shadow:0 0 4px #B8FFDA;`;
   document.body.appendChild(p);
 }
-// scroll reveal
+// scroll reveal observer
 const reveals = document.querySelectorAll('.reveal');
-const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
-reveals.forEach(el => obs.observe(el));
+const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
