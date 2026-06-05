@@ -27,18 +27,25 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
 #env-bg img{width:100%; height:100%; object-fit:cover; opacity:0.4; filter:saturate(1.2) brightness(0.7);}
 #env-bg-ov{position:absolute; inset:0; background:radial-gradient(circle at 30% 40%, rgba(255,184,236,0.25), rgba(184,255,218,0.2), rgba(4,10,5,0.55)); pointer-events:none; z-index:1;}
 
-/* butterflies floating all around */
-.butterfly-global{
-  position:fixed; pointer-events:none; font-size:24px; z-index:10;
-  animation: flyButterflyRandom 18s ease-in-out infinite;
-  filter:drop-shadow(0 0 5px rgba(255,184,236,0.8));
+/* butterflies - LIGHT GREEN & PINK, abundant fluttering */
+.butterfly-global, .butterfly-env{
+  position:fixed; pointer-events:none; z-index:12;
+  animation: flyButterflyRandom 16s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px #B8FFDA) drop-shadow(0 0 2px #FFB8EC);
+  will-change: transform;
 }
 @keyframes flyButterflyRandom{
-  0%{opacity:0; transform:translate(-10%, 110vh) scale(0.5) rotate(0deg);}
-  15%{opacity:0.9;}
-  50%{opacity:1; transform:translate(20vw, 30vh) scale(1) rotate(15deg);}
-  85%{opacity:0.7;}
-  100%{opacity:0; transform:translate(80vw, -20vh) scale(0.8) rotate(720deg);}
+  0%{opacity:0; transform:translate(-10%, 110vh) scale(0.4) rotate(0deg);}
+  15%{opacity:0.95;}
+  40%{opacity:1; transform:translate(15vw, 35vh) scale(1) rotate(12deg);}
+  70%{opacity:0.9;}
+  100%{opacity:0; transform:translate(70vw, -25vh) scale(0.7) rotate(540deg);}
+}
+/* additional subtle flutter for variety */
+@keyframes gentleFlutter{
+  0%{transform:translate(0,0) rotate(0deg);}
+  50%{transform:translate(8px, -12px) rotate(8deg);}
+  100%{transform:translate(-5px, 5px) rotate(-4deg);}
 }
 .env-petal{position:absolute; pointer-events:none; opacity:0; animation:epetalFall var(--d,12s) linear infinite var(--dl,0s); font-size:var(--fs,16px);}
 @keyframes epetalFall{
@@ -58,19 +65,6 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
   position:absolute; inset:0; border-radius:12px;
   background:linear-gradient(160deg, #FFD9F4 0%, #FFB8EC 60%, #F29BCB 100%);
 }
-/* Green ribbon across envelope */
-.env-ribbon{
-  position:absolute; left:-10px; top:40%; width:calc(100% + 20px); height:28px;
-  background: linear-gradient(90deg, #7CCF8C, #B8FFDA, #7CCF8C);
-  transform:rotate(-3deg); z-index:6; box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  border-radius:4px; pointer-events:none;
-}
-.env-ribbon::before, .env-ribbon::after{
-  content:''; position:absolute; width:22px; height:28px; background:#5FAF6E; top:0;
-  border-radius:4px;
-}
-.env-ribbon::before{left:-12px; transform:skewX(10deg);}
-.env-ribbon::after{right:-12px; transform:skewX(-10deg);}
 .env-flap-bottom{
   position:absolute; bottom:0; left:0; right:0; height:55%;
   background:linear-gradient(180deg, #FFC2E8 0%, #FF9ED6 100%);
@@ -111,9 +105,9 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
 #env-box.open .env-flap-top{transform:rotateX(-175deg);}
 #env-box.open .wax-seal{transform:translateX(-50%) scale(0); opacity:0;}
 #env-box.open .env-letter{opacity:1; transform:translateY(0);}
-.env-hint{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(14px,4vw,18px); color:rgba(255,255,240,0.9); text-shadow:0 0 8px #FFB8EC; animation:hintPulse 2s infinite;}
+.env-hint{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(14px,4vw,18px); color:rgba(255,255,240,0.9); text-shadow:0 0 8px #B8FFDA; animation:hintPulse 2s infinite;}
 @keyframes hintPulse{0%,100%{opacity:0.7; transform:translateY(0);}50%{opacity:1; transform:translateY(-4px);}}
-.ripple{position:absolute; border-radius:50%; pointer-events:none; background:rgba(255,184,236,0.5); transform:scale(0); animation:rippleOut 0.8s forwards;}
+.ripple{position:absolute; border-radius:50%; pointer-events:none; background:rgba(184,255,218,0.5); transform:scale(0); animation:rippleOut 0.8s forwards;}
 @keyframes rippleOut{to{transform:scale(5); opacity:0;}}
 #transition-overlay{position:fixed; inset:0; z-index:9998; background:#071208; pointer-events:none; opacity:0;}
 
@@ -159,7 +153,7 @@ body{font-family:'Lato',sans-serif;font-weight:300;background:#071208;color:#f5e
 .glass-card{
   background:rgba(255,255,255,0.08); backdrop-filter:blur(14px);
   border-radius:28px; padding:26px 20px; margin-bottom:20px;
-  border:1px solid rgba(255,184,236,0.5);
+  border:1px solid rgba(184,255,218,0.6);
   box-shadow:0 0 12px rgba(184,255,218,0.3), 0 4px 20px rgba(0,0,0,0.2);
   transition: box-shadow 0.3s;
 }
@@ -214,7 +208,7 @@ footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:1
     <div class="env-title">🦋 A Garden of Wishes 🦋</div>
     <div id="env-box">
       <div class="env-body"></div>
-      <div class="env-ribbon"></div> <!-- LIGHT GREEN RIBBON -->
+      <!-- RIBBON REMOVED -->
       <div class="env-flap-left"></div><div class="env-flap-right"></div><div class="env-flap-bottom"></div>
       <div class="env-letter">
         <div class="env-letter-name">Monique Diane Basallote</div>
@@ -266,27 +260,27 @@ footer{text-align:center; padding:32px; color:rgba(255,255,255,0.4); font-size:1
       <div class="glass-card reveal"><p style="font-size:22px; font-weight:bold; color:var(--pink); text-align:center;">Villa Salud Catering Services</p><p class="venue-addr">#229 M.L Quezon st purok 3 Brgy New Lower Bicutan Taguig City</p><p style="text-align:center; margin-top:8px;">🌸 Garden Reception 🌸</p></div>
     </section>
 
-    <!-- 18 LISTS (glowing borders, numbered alignment) -->
+    <!-- 18 LISTS -->
     <section class="section"><h2 class="section-title">✦ The 18 Ceremony ✦</h2><div class="section-divider"><div class="divider-line"></div><div class="divider-gem"></div><div class="divider-line"></div></div>
       <div class="lists-wrapper reveal" id="lists-root"></div>
     </section>
 
-    <!-- DRESS CODE (removed RSVP) -->
+    <!-- DRESS CODE -->
     <section class="section"><h2 class="section-title">Dress Code</h2><div class="section-divider"><div class="divider-line"></div><div class="divider-gem"></div><div class="divider-line"></div></div>
       <div class="glass-card reveal" style="text-align:center;"><p style="font-size:24px; font-family:'Cinzel Decorative';">Semi-Formal Garden</p><div class="attire-swatch"><div class="swatch swatch1"></div><div class="swatch swatch2"></div><div class="swatch swatch3"></div></div><p><span style="color:#FFB8EC;">Pink (#FFB8EC)</span> · <span style="color:#B8FFDA;">Green (#B8FFDA)</span> · <span style="color:white;">White</span><br>Floral accents & elegance encouraged 🌿</p></div>
     </section>
 
-    <!-- MAP only (RSVP removed) -->
+    <!-- MAP -->
     <section class="section"><h2 class="section-title">Location Map</h2><div class="section-divider"><div class="divider-line"></div><div class="divider-gem"></div><div class="divider-line"></div></div>
-      <div class="reveal"><iframe src="https://maps.google.com/maps?q=New+Lower+Bicutan+Taguig+City&hl=en&z=15&output=embed" style="width:100%; height:280px; border-radius:28px; border:1px solid rgba(255,184,236,0.6);" allowfullscreen></iframe></div>
+      <div class="reveal"><iframe src="https://maps.google.com/maps?q=New+Lower+Bicutan+Taguig+City&hl=en&z=15&output=embed" style="width:100%; height:280px; border-radius:28px; border:1px solid rgba(184,255,218,0.6);" allowfullscreen></iframe></div>
     </section>
 
-    <footer><p>Monique Diane Basallote · June 27, 2026 · Villa Salud, Taguig</p><p>🦋 A flutter of butterflies and forever memories 🦋</p></footer>
+    <footer><p>Monique Diane Basallote · June 27, 2026 · Villa Salud, Taguig</p><p>🦋 A flutter of light green butterflies and forever memories 🦋</p></footer>
   </div>
 </div>
 
 <script>
-// ======================== DATA LISTS (exactly as provided, numbered 1-18) ========================
+// ======================== DATA LISTS (1-18 each) ========================
 const listData = {
   "🌹 18 Roses": ["Roy Ativo","Mark Daniel Rojas","Clint Peter Maggay","Cedrick Basallote","Mark Dimver Navia","Daniel Jose Niel Maambong","Kobe Catucod","AJ Guzman","Vince Miranda","James Mark Guzman","Noel Lamud","Joefer Burce","Ralph Nathan Ramirez","JV Navia","Lenard Adrianne Del Rosario","Jpatrick Cabigan","Charles Andrei Noroña","Sandy Basallote"],
   "🎁 18 Gifts": ["Shameerah Elise Porto","Keyanne Cañete","Bea Trasmaño","Krish Ann Esteban","Kristine Macaspac","Krizette Cera","Shereen Tejana","Krisha Mae Gallardo","Prairee Basallote","Alma Lealde","Jasmine Joy Libo-on","Krizle Dala","Krizza Mae Cera","Crystel Dollesin","Irah Dollesin","Babylyn Lolo","Marielle Borinaga","Marian Borinaga"],
@@ -296,28 +290,25 @@ const listData = {
   "✨ 18 Treasures": ["Lourish Joy Dasig","Prescious Guzman","Niña Rea Guzman","Babylyn Lolo","Clarisa Magdamit","Mary Grace Guzman","Crista Chin Miranda","Krisha Navia","Elaina Faith Guzman","Amara Basallote","Princess Chantal Miranda","Tanya Grace Guzman","Athea Tolosa","Chanlian Miranda","Wyeth Basallote","Ethan Andrei Tolosa","Xian Liam Guzman","Kurt Nathan Socayre"]
 };
 
-// Build each list card with proper numbers
 const container = document.getElementById('lists-root');
 for (const [title, names] of Object.entries(listData)) {
-  const card = document.createElement('div');
-  card.className = 'list-card';
+  const card = document.createElement('div'); card.className = 'list-card';
   card.innerHTML = `<div class="list-title">${title}</div><div class="list-grid" id="grid-${title.replace(/\s/g,'')}"></div>`;
   container.appendChild(card);
   const gridDiv = card.querySelector('.list-grid');
   names.forEach((name, idx) => {
-    const item = document.createElement('div');
-    item.className = 'list-item';
+    const item = document.createElement('div'); item.className = 'list-item';
     item.innerHTML = `<span class="list-num">${idx+1}.</span><span class="list-name">${name}</span>`;
     gridDiv.appendChild(item);
   });
 }
-// Special Gift card
+// Special Gift Card
 const specialCard = document.createElement('div');
 specialCard.className = 'list-card';
 specialCard.innerHTML = `<div class="list-title">💎 Special Gift</div><div class="list-item" style="justify-content:center;"><span class="list-num">★</span><span class="list-name" style="color:#FFB8EC; font-size:18px;">Diana Rose Basallote</span></div>`;
 container.appendChild(specialCard);
 
-// ======================== CAROUSEL (6 slides) ========================
+// ======================== CAROUSEL ========================
 const inner = document.getElementById('carousel-inner');
 const slides = document.querySelectorAll('.carousel-slide');
 const total = slides.length;
@@ -344,7 +335,7 @@ function openEnvelope(e) {
   if (opened) return; opened = true;
   const rip = document.createElement('div'); rip.className = 'ripple';
   const rect = envBox.getBoundingClientRect(); const cx = e.clientX || rect.left+rect.width/2, cy = e.clientY || rect.top+rect.height/2;
-  rip.style.cssText = `width:180px; height:180px; left:${cx-rect.left-90}px; top:${cy-rect.top-90}px; background:rgba(255,184,236,0.6);`;
+  rip.style.cssText = `width:180px; height:180px; left:${cx-rect.left-90}px; top:${cy-rect.top-90}px; background:rgba(184,255,218,0.6);`;
   envBox.appendChild(rip);
   envBox.classList.add('open');
   setTimeout(() => {
@@ -362,29 +353,42 @@ function openEnvelope(e) {
 envBox.addEventListener('click', openEnvelope);
 envBox.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openEnvelope(e); });
 
-// ======================== FLYING BUTTERFLIES (abundant) ========================
+// ======================== ABUNDANT LIGHT GREEN BUTTERFLIES (removed ribbon, added 80+ butterflies) ========================
+// Envelope screen butterflies (light green tint)
 for (let i = 0; i < 45; i++) {
+  const b = document.createElement('div');
+  b.className = 'butterfly-env';
+  b.innerHTML = '🦋';
+  const dur = 12 + Math.random() * 20;
+  const delay = Math.random() * 15;
+  const left = Math.random() * 100;
+  const size = 20 + Math.random() * 22;
+  b.style.cssText = `position:fixed; left:${left}vw; top:-10vh; animation: flyButterflyRandom ${dur}s ease-in-out infinite ${delay}s; font-size:${size}px; filter: drop-shadow(0 0 8px #B8FFDA) drop-shadow(0 0 3px #FFB8EC); z-index:15;`;
+  document.getElementById('envelope-screen').appendChild(b);
+}
+// Main invitation butterflies (massive, light green dominant)
+for (let i = 0; i < 70; i++) {
   const b = document.createElement('div');
   b.className = 'butterfly-global';
   b.innerHTML = '🦋';
-  const dur = 14 + Math.random() * 18;
-  const delay = Math.random() * 20;
+  const dur = 14 + Math.random() * 22;
+  const delay = Math.random() * 18;
   const left = Math.random() * 100;
-  const size = 20 + Math.random() * 18;
-  b.style.cssText = `left:${left}vw; animation-duration:${dur}s; animation-delay:${delay}s; font-size:${size}px; z-index:6;`;
+  const size = 18 + Math.random() * 26;
+  b.style.cssText = `left:${left}vw; animation-duration:${dur}s; animation-delay:${delay}s; font-size:${size}px; filter: drop-shadow(0 0 10px #B8FFDA) drop-shadow(0 0 5px #A8E6C0); z-index:6;`;
   document.body.appendChild(b);
 }
-// also floating petals
-for (let i = 0; i < 30; i++) {
+// Additional floating petals & fairy particles
+for (let i = 0; i < 40; i++) {
   const p = document.createElement('div');
   p.className = 'fairy-particle';
-  p.style.cssText = `width:${3+Math.random()*6}px; height:${3+Math.random()*6}px; background:${['#FFB8EC','#B8FFDA','#FFF'][i%3]}; left:${Math.random()*100}vw; bottom:${Math.random()*20}vh; --dur:${5+Math.random()*12}s; --delay:${Math.random()*10}s;`;
+  p.style.cssText = `width:${3+Math.random()*7}px; height:${3+Math.random()*7}px; background:${['#B8FFDA','#FFB8EC','#FFF'][i%3]}; left:${Math.random()*100}vw; bottom:${Math.random()*20}vh; --dur:${5+Math.random()*12}s; --delay:${Math.random()*12}s; box-shadow:0 0 4px #B8FFDA;`;
   document.body.appendChild(p);
 }
-// Scroll reveal
+// scroll reveal
 const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
-reveals.forEach(el => observer.observe(el));
+const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+reveals.forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
